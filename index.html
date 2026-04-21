@@ -3,109 +3,314 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>내 게임 & 동영상</title>
+  <title>AI를 활용한 Node.js 실시간 멀티 게임</title>
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       max-width: 900px;
       margin: 0 auto;
       padding: 2rem 1rem;
-      background: #f5f5f5;
+      background: #0f1117;
+      color: #eee;
     }
-    h1 { text-align: center; margin-bottom: 2rem; }
-    h2 { margin: 0 0 1rem; font-size: 1.1rem; color: #333; }
-    .section {
-      background: white;
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
+
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem 2.5rem;
+      margin-bottom: 2rem;
     }
-    .bonus {
-      background: white;
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      border-left: 4px solid #f0a500;
-    }
-    .bonus-label {
+    .hero-badge {
       display: inline-block;
-      background: #fff3cd;
-      color: #856404;
+      background: #1a2a1a;
+      color: #2da44e;
+      border: 1px solid #2da44e;
       font-size: 0.8rem;
-      font-weight: bold;
-      padding: 3px 10px;
+      padding: 4px 14px;
       border-radius: 20px;
+      margin-bottom: 1rem;
+      letter-spacing: 1px;
+    }
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: #fff;
       margin-bottom: 0.8rem;
     }
-    video { width: 100%; border-radius: 8px; }
+    .hero h1 span { color: #2da44e; }
+    .hero p {
+      color: #888;
+      font-size: 0.95rem;
+    }
+    .hero-tags {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 1.2rem;
+    }
+    .tag {
+      background: #1c1c2e;
+      border: 1px solid #333;
+      color: #aaa;
+      font-size: 0.78rem;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    .section {
+      background: #1a1a2e;
+      border: 1px solid #2a2a3e;
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-bottom: 1.8rem;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1rem;
+    }
+    .game-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .icon-soccer { background: #1a2e1a; }
+    .icon-battle { background: #2e1a1a; }
+    .icon-slither { background: #1a1a2e; }
+
+    .section-header h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #fff;
+      margin: 0;
+    }
+    .section-header p {
+      font-size: 0.8rem;
+      color: #666;
+      margin: 2px 0 0;
+    }
+
+    .features {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+    }
+    .feature-tag {
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: 6px;
+      border: 1px solid;
+    }
+    .ft-green { background: #0d2b0d; color: #4caf50; border-color: #2d5a2d; }
+    .ft-blue  { background: #0d1b2b; color: #64b5f6; border-color: #1e3a5f; }
+    .ft-purple{ background: #1a0d2b; color: #ce93d8; border-color: #3d1f5a; }
+    .ft-orange{ background: #2b1a0d; color: #ffb74d; border-color: #5a3a1e; }
+
+    .desc {
+      font-size: 0.88rem;
+      color: #999;
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+      padding: 0.8rem 1rem;
+      background: #13131f;
+      border-radius: 8px;
+      border-left: 3px solid #2a2a4a;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 10px;
+      background: #000;
+    }
+
     .btn {
       display: inline-block;
       background: #2da44e;
       color: white;
-      padding: 8px 20px;
+      padding: 9px 22px;
       border-radius: 8px;
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
+      font-weight: 500;
       margin-top: 1rem;
+      transition: background 0.2s;
     }
     .btn:hover { background: #218a3e; }
+
+    .bonus {
+      background: #1e1a0d;
+      border: 1px solid #3a2e10;
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-bottom: 1.8rem;
+    }
+    .bonus-label {
+      display: inline-block;
+      background: #2e2000;
+      color: #f0a500;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+      border: 1px solid #5a3e00;
+      letter-spacing: 1px;
+    }
+    .bonus h2 {
+      font-size: 1.1rem;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .bonus .desc { border-left-color: #5a3e00; }
     .btn-python {
       display: inline-block;
       background: #3572A5;
       color: white;
-      padding: 8px 20px;
+      padding: 9px 22px;
       border-radius: 8px;
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
+      font-weight: 500;
       margin-top: 1rem;
     }
     .btn-python:hover { background: #285a8a; }
+
+    footer {
+      text-align: center;
+      color: #444;
+      font-size: 0.8rem;
+      padding-top: 1rem;
+      border-top: 1px solid #222;
+      margin-top: 1rem;
+    }
   </style>
 </head>
 <body>
 
-  <h1>수업 자료</h1>
+  <div class="hero">
+    <div class="hero-badge">NODE.JS + SOCKET.IO</div>
+    <h1>AI를 활용한 <span>Node.js</span><br>실시간 멀티 게임</h1>
+    <p>AI와 함께 만든 브라우저 기반 멀티플레이어 게임 프로젝트</p>
+    <div class="hero-tags">
+      <span class="tag">Node.js</span>
+      <span class="tag">Socket.io</span>
+      <span class="tag">실시간 통신</span>
+      <span class="tag">AI 코딩</span>
+      <span class="tag">멀티플레이어</span>
+    </div>
+  </div>
 
+  <!-- Soccer -->
   <div class="section">
-    <h2>Soccer</h2>
+    <div class="section-header">
+      <div class="game-icon icon-soccer">⚽</div>
+      <div>
+        <h2>Soccer</h2>
+        <p>2인 실시간 대전 축구 게임</p>
+      </div>
+    </div>
+    <div class="features">
+      <span class="feature-tag ft-green">실시간 멀티플레이어</span>
+      <span class="feature-tag ft-blue">물리 엔진</span>
+      <span class="feature-tag ft-purple">키보드 조작</span>
+      <span class="feature-tag ft-orange">점수 시스템</span>
+    </div>
+    <div class="desc">
+      두 명이 브라우저에서 실시간으로 대결하는 축구 게임입니다.
+      Socket.io로 플레이어 위치와 공의 움직임을 동기화하며,
+      골 판정과 점수 집계를 서버에서 처리합니다.
+    </div>
     <video controls>
       <source src="Soccer.mp4" type="video/mp4">
       동영상을 재생할 수 없습니다.
     </video>
     <br>
-    <a href="Soccer.zip" download class="btn">Soccer 다운로드</a>
+    <a href="Soccer.zip" download class="btn">⬇ Soccer 다운로드</a>
   </div>
 
+  <!-- Battle City -->
   <div class="section">
-    <h2>Battle City</h2>
+    <div class="section-header">
+      <div class="game-icon icon-battle">🔫</div>
+      <div>
+        <h2>Battle City</h2>
+        <p>고전 탱크 배틀 멀티플레이어 리메이크</p>
+      </div>
+    </div>
+    <div class="features">
+      <span class="feature-tag ft-green">실시간 멀티플레이어</span>
+      <span class="feature-tag ft-blue">맵 시스템</span>
+      <span class="feature-tag ft-purple">충돌 처리</span>
+      <span class="feature-tag ft-orange">포탄 발사</span>
+    </div>
+    <div class="desc">
+      고전 아케이드 게임 배틀시티를 Node.js로 리메이크한 작품입니다.
+      탱크 이동, 포탄 발사, 벽 파괴, 플레이어 간 충돌을 서버에서 실시간으로 처리합니다.
+    </div>
     <video controls>
       <source src="BattleCity.mp4" type="video/mp4">
       동영상을 재생할 수 없습니다.
     </video>
     <br>
-    <a href="BattleCity.zip" download class="btn">Battle City 다운로드</a>
+    <a href="BattleCity.zip" download class="btn">⬇ Battle City 다운로드</a>
   </div>
 
+  <!-- Slither -->
   <div class="section">
-    <h2>Slither</h2>
+    <div class="section-header">
+      <div class="game-icon icon-slither">🐍</div>
+      <div>
+        <h2>Slither</h2>
+        <p>멀티플레이어 뱀 성장 게임</p>
+      </div>
+    </div>
+    <div class="features">
+      <span class="feature-tag ft-green">실시간 멀티플레이어</span>
+      <span class="feature-tag ft-blue">성장 시스템</span>
+      <span class="feature-tag ft-purple">충돌 감지</span>
+      <span class="feature-tag ft-orange">랭킹 시스템</span>
+    </div>
+    <div class="desc">
+      slither.io에서 영감을 받은 멀티플레이어 뱀 게임입니다.
+      먹이를 먹을수록 몸이 길어지며, 다른 플레이어와 부딪히면 탈락합니다.
+      실시간 랭킹으로 순위를 경쟁할 수 있습니다.
+    </div>
     <video controls>
       <source src="Slither.mp4" type="video/mp4">
       동영상을 재생할 수 없습니다.
     </video>
     <br>
-    <a href="Slither.zip" download class="btn">Slither 다운로드</a>
+    <a href="Slither.zip" download class="btn">⬇ Slither 다운로드</a>
   </div>
 
+  <!-- 번외편 -->
   <div class="bonus">
-    <span class="bonus-label">번외편</span>
+    <span class="bonus-label">★ 번외편</span>
     <h2>매크로 시연 영상</h2>
+    <div class="desc">
+      파이썬으로 제작한 자동화 매크로 프로그램 시연 영상입니다.
+      반복 작업을 자동으로 처리하며 pyautogui 라이브러리를 활용했습니다.
+    </div>
     <video controls>
       <source src="매크로시연영상.mp4" type="video/mp4">
       동영상을 재생할 수 없습니다.
     </video>
     <br>
-    <a href="main.py" download class="btn-python">코드 다운로드 (.py)</a>
+    <a href="main.py" download class="btn-python">⬇ 코드 다운로드 (.py)</a>
   </div>
+
+  <footer>
+    부평중학교 · Node.js 방과후 수업 프로젝트
+  </footer>
 
 </body>
 </html>
